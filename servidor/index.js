@@ -25,8 +25,16 @@ app.use(
     secret: process.env.SECRET,
     algorithms: ["HS256"],
     getToken: req => req.cookies.token
-  }).unless({ path: ["/autenticar", "/logar", "/deslogar", "/"] })
+  }).unless({ path: ["/autenticar", "/logar", "/deslogar", "/usuarios/cadastrar"] })
 );
+
+app.get('/usuarios/cadastrar/logado', async function(req, res){
+  res.render('logado');
+})
+
+app.get('/usuarios/cadastrar', async function(req, res){
+  res.render('cadastrar');
+})
 
 app.get('/autenticar', async function(req, res){
   res.render('autenticar');
@@ -36,12 +44,46 @@ app.get('/', async function(req, res){
   res.render("home")
 })
 
+app.post('/usuarios/cadastrar', (req, res) => {
+  let {usuario, senha, confirmesenha} = req.body;
+
+    const id = 1;
+
+    if ( senha == confirmesenha ){
+      return res.json({
+        usuario: usuario,
+        senha: senha,
+        confirme: confirmesenha
+      })
+    }else{
+      res.status(500).json({mensagem: "As senhas não estão identicas"})
+    }
+  }
+)
+
 app.post('/logar', (req, res) => {
-  res.send("Você está logado!")
+  if (req.body.usuario == "renato" && req.body.senha == "1234"){
+    const id = 1;
+
+    const token = jwt.sign({ id }, process.env.SECRET, {
+      expiresIn: 300
+    });
+
+    res.cookie('token', token, { httpOnly: true});
+    return res.json({
+      usuario: req.body.usuario,
+      token: token
+    })
+  }
+
+  res.status(500).json({mensagem: "Login Inválido"})
 })
 
 app.post('/deslogar', function(req, res) {
-  
+  res.cookie('token', null, { httpOnly: true});
+  return res.json({
+    deslogado: true
+  })
 })
 
 app.listen(3000, function() {
