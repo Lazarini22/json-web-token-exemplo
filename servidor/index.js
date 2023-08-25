@@ -40,26 +40,25 @@ app.get('/autenticar', async function(req, res){
   res.render('autenticar');
 })
 
-app.get('/', async function(req, res){
-  res.render("home")
-})
-
-app.post('/usuarios/cadastrar', (req, res) => {
-  let {usuario, senha, confirmesenha} = req.body;
-
-    const id = 1;
-
-    if ( senha == confirmesenha ){
-      return res.json({
-        usuario: usuario,
-        senha: senha,
-        confirme: confirmesenha
-      })
-    }else{
-      res.status(500).json({mensagem: "As senhas não estão identicas"})
-    }
+app.get('/usuarios/listar', async function(req, res){
+  try {
+    const list = await usuario.findAll();
+    res.render('listar', { list });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erro ao listar usuários");
   }
-)
+});
+
+app.post('/usuarios/cadastrar', async function(req, res){
+  if(req.body.senha == req.body.confirmesenha){
+    await nome.create(req.body);
+    res.redirect("/usuarios/Listar")
+    } else{
+      res.json("Não possivel cadastrar")
+    }
+ })
+
 
 app.post('/logar', (req, res) => {
   if (req.body.usuario == "renato" && req.body.senha == "1234"){

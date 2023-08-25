@@ -7,8 +7,16 @@
   <title>Document</title>
 </head>
 <body>
+  <main>
+    <h1>Usuarios Cadastrados</h1>
+    <ul>
+      <% entradas.map(usuario => { %>
+      <li><%= usuario.nome %></li>
+    <% }) %>
+    </ul>
   <form action="/deslogar" method="post">
     <input type="submit" value="Deslogar">
   </form>
+</main>
 </body>
 </html>
