@@ -4,18 +4,27 @@ const crypto = require("./crypto");
 require("dotenv-safe").config();
 const jwt = require("jsonwebtoken");
 var { expressjwt: expressJWT } = require("express-jwt");
+const corsOpcoes = {
+  //CLIENTE QUE FARÁ O ACESSO
+  origin: "Http://localhost:3000",
+  //METODOS QUE O CLIENTE PODE EXECUTAR
+  methods:"GET,PUT,POST,DELETE",
+
+  allowedHeaders:"Content-Type, Authorization",
+  credentials: true
+} 
+
 const cors = require("cors");
-
 var cookieParser = require("cookie-parser");
-
 const express = require("express");
 const { usuario } = require("./models");
-
 const app = express();
+
+
 
 app.set("view engine", "ejs");
 
-app.use(cors());
+app.use(cors(corsOpcoes));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -80,7 +89,7 @@ app.post("/usuarios/cadastrar", async function (req, res) {
 
 app.post("/logar", async function (req, res) {
   try {
-    const user = await usuario.findOne({ where: { usuario: req.body.user } });
+    const user = await usuario.findOne({ where: { usuario: req.body.name, senha: crypto.encrypt(password) } });
     //Descriptografando a senha do banco dados
     let userSenha = crypto.decrypt(user.senha);
     if (req.body.pass === userSenha) {
@@ -88,8 +97,11 @@ app.post("/logar", async function (req, res) {
       const token = jwt.sign({ id }, process.env.SECRET, {
         expiresIn: 300,
       });
-      res.cookie("token", token, { httpOnly: true });
-      return res.redirect("/usuarios/listar");
+      res.cookie("token", token, { httpOnly: true }).json({
+          name: user.usuario,
+          token: token
+      })
+      
     } else {
       res.status(500).send("Senha inválida");
     }
@@ -104,6 +116,6 @@ app.post("/deslogar", function (req, res) {
   res.redirect("/autenticar");
 });
 
-app.listen(3000, function () {
+app.listen(4000, function () {
   console.log("App de Exemplo escutando na porta 3000!");
 });

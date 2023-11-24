@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 5vh;
+}
+
+h1 {
+  color: #009b48;
+  position: relative;
+  font-family: "Your-Font-Name", sans-serif;
+}
+
+.servidores {
+  font-size: small;
+  position: absolute;
+  bottom: 0;
+  color: black;
+}
+
+.page {
+  height: 100vh;
+  background: linear-gradient(to right, #147921f7, #13721e);
+  font-family: "Roboto";
+}
+
+#espace {
+  margin-bottom: 20vh;
+}
+
+#space {
+  margin-top: 20vh;
+}
+
+header {
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+  width: 40%;
+  margin: auto;
+  padding: 35px;
+  border-radius: 10px;
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.nome-card {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nome-card h1 {
+  font-size: 24px;
+  margin: 0;
+  color: #333;
+}
