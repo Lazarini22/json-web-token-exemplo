@@ -15,18 +15,24 @@ export default function Login() {
   const handlerLogin = async (e) => {
     e.preventDefault();
     try {
-      const userAuth = await handlerAcessUser(user);
-      if (userAuth.token === undefined) {
-        toast.error("E-mail ou senha invalidos");
-      } else {
-        toast.success("Login efetuado!");
-        push("/pages/dashboard");
+      try {
+        await handlerAcessUser(user);
+        push('/pages/dashboard');
+      } catch {
+        refresh();
       }
-    } catch {
-      toast.error("Erro");
-      refresh();
-    }
-  };
+  
+      const success = true;
+  
+      if (success) {
+        toast.success('Formulário enviado com sucesso!');
+      } else {
+        toast.error('Ocorreu um erro ao enviar o formulário.');
+      }
+    };
+
+
+
 
   return (
     <div className="page">

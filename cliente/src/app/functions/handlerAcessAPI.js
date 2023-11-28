@@ -2,34 +2,56 @@
 
 //const url = "http://localhost:4000";
 
-const servidores = [
-  {
-    nome: "Claudio Zarate",
-    email: "claudio@gmail.com",
-    senha: "123",
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  },
-  {
-    nome: "Marcelino Vitor",
-    email: "marcelino@gmail.com",
-    senha: "123",
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  },
-];
+const getUseAuthenticated = async (user) => {
+  
+  try{
+    const resapi = await fetch(url +"/user/autenticated",
+    {
+      cache: "no-cache",
+      method: "POST", 
+      headers: {"Content-type": "Aplication/json"},
+      body: JSON.stringify(user)
 
-const getUserAuthenticated = (user) => {
-    let userAuth = {};
-    servidores.map(e => {
-        if(e.email === user.email && e.senha === user.password){
-            userAuth = e;
-        }
-    })
-    return userAuth
+    }
+  );
+  const usuarioAutentique = await resapi.json();
+  return usuarioAutentique;
+  }catch {
+    return{};
+  }
+  }
+
+
+
+  const postUsuario = async (user) => {
+    try{
+      const resapi = await fetch(url + "/user",{
+        method: 'POST',
+        headers: {'content-Type': 'Application/json'},
+        body: JSON.stringify(user)
+      });
+      const saveUsuario = await resapi.json();
+      return saveUsuario;
+    }catch{
+      return null;
+    }
+    }
+
+
+  const pegarUsuario = async () =>{
+
+    const pegar = await fetch(url + "/users",
+    {
+      next: {revalidate: 10},
+    }
+);
+  
+  const usuarioAutentique = await pegar.josn();
+  return usuarioAutentique;
 };
 
-const getUsers = () => {
-    return servidores;
-};
-export { getUsers, getUserAuthenticated };
+const getUserRegistered = (user) => {
+
+}
+
+export {pegarUsuario, getUseAuthenticated, postUsuario};

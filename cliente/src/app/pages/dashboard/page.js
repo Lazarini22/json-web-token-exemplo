@@ -1,30 +1,24 @@
 import Listagem from "@/app/Listagem/Listagem";
-import { getUsers } from "@/app/functions/handlerAcessAPI";
+import { getUsers, pegarUsuario } from "@/app/functions/handlerAcessAPI";
 import { Suspense } from "react";
 
 export default async function Dashboard() {
-  let nomes = getUsers();
+
+  const dash = await pegarUsuario();
+
   return (
-    <div className="page">
-      <header>
-        <h1>
-          IFMS<span className="servidores">.servidores</span>
-        </h1>
-      </header>
-      <Suspense
-        fallback={
-          <h1 className="section" id="space">
-            Carregando...!
-          </h1>
-        }
-      >
-        <Listagem users={nomes} />
-        {nomes.map((serv) => (
-          <div className="nome-card" key={serv.id}>
-            <h1>{serv.nome}</h1>
+    <body className={styles.body}>
+      <div class={styles.div}>
+        <div className={mzar}>
+          <h1 className={StyleSheet.textao}>Dashboard</h1>
+
+          <div className={style.nzao}>
+            {chama.map((users) =>
+              <p className={style.usuario}>Nome: {users.nome}</p>
+            )}
           </div>
-        ))}
-      </Suspense>
-    </div>
-  );
-}
+        </div>
+      </div>
+    </body>
+);
+};
