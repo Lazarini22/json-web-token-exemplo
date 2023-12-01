@@ -7,14 +7,16 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [user, setUser] = useState({
-    name: "",
-    password: "",
+    usuario: "",
+    senha: "",
   });
   const { push, refresh } = useRouter();
 
   const handlerLogin = async (e) => {
     e.preventDefault();
-    try {
+    
+    
+
       try {
         await handlerAcessUser(user);
         push('/pages/dashboard');
@@ -29,8 +31,9 @@ export default function Login() {
       } else {
         toast.error('Ocorreu um erro ao enviar o formulário.');
       }
-    };
 
+    }
+  
 
 
 
@@ -48,14 +51,14 @@ export default function Login() {
             name="name"
             type="text"
             onChange={(e) => {
-              setUser({ ...user, name: e.target.value });
+              setUser({ ...user, usuario: e.target.value });
             }}
           ></input>
           <input
             placeholder="Senha"
             type="password"
             onChange={(e) => {
-              setUser({ ...user, password: e.target.value });
+              setUser({ ...user, senha: e.target.value });
             }}
           ></input>
           <button>Entrar</button>
@@ -64,4 +67,5 @@ export default function Login() {
       <ToastContainer />
     </div>
   );
-}
+          
+          }

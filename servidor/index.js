@@ -89,10 +89,9 @@ app.post("/usuarios/cadastrar", async function (req, res) {
 
 app.post("/logar", async function (req, res) {
   try {
-    const user = await usuario.findOne({ where: { usuario: req.body.name, senha: crypto.encrypt(password) } });
-    //Descriptografando a senha do banco dados
+    const user = await usuario.findOne({ where: { usuario: req.body.usuario} });
     let userSenha = crypto.decrypt(user.senha);
-    if (req.body.pass === userSenha) {
+    if (!user) {
       const id = user.id;
       const token = jwt.sign({ id }, process.env.SECRET, {
         expiresIn: 300,

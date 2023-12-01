@@ -9,9 +9,8 @@ import Link from 'next/link';
 
 export default function Registro() {
   const [registra, setRegistra] = useState({
-    name: '',
-    email: '',
-    password: ''
+    usuario: '',
+    senha: ''
   });
   const { push, refresh } = useRouter();
 
@@ -45,15 +44,7 @@ export default function Registro() {
             className={styles.input}
             placeholder='Nome'
             type="name"
-            onChange={(e) => { setRegistra({ ...registra, name: e.target.value }) }}>
-          </input>
-
-          <input
-            required
-            className={styles.input}
-            placeholder='E-mail'
-            type="email"
-            onChange={(e) => { setRegistra({ ...registra, email: e.target.value }) }}>
+            onChange={(e) => { setRegistra({ ...registra, usuario: e.target.value }) }}>
           </input>
 
           <input
@@ -61,7 +52,7 @@ export default function Registro() {
             className={styles.input}
             placeholder='Senha'
             type='password'
-            onChange={(e) => { setRegistra({ ...registra, password: e.target.value }) }}>
+            onChange={(e) => { setRegistra({ ...registra, senha: e.target.value }) }}>
           </input>
           <button className={styles.button}>Entrar</button>
         </form>
