@@ -14,28 +14,23 @@ export default function Login() {
 
   const handlerLogin = async (e) => {
     e.preventDefault();
-    
-    
-
+  
       try {
-        await handlerAcessUser(user);
-        push('/pages/dashboard');
-      } catch {
+        const userAuth = await handlerAcessUser(user);
+        if (userAuth.error) {
+          let mensagem = JSON.parse(userAuth.error)
+          toast.error(mensagem.error);
+          return;
+        }
+        toast.success("login efetuado");
+        setTimeout(() => {
+          push("/pages/dashboard");
+        }, 1500);
+      }catch {
+        toast.error("Error!");
         refresh();
       }
-  
-      const success = true;
-  
-      if (success) {
-        toast.success('Formulário enviado com sucesso!');
-      } else {
-        toast.error('Ocorreu um erro ao enviar o formulário.');
-      }
-
-    }
-  
-
-
+    };
 
   return (
     <div className="page">

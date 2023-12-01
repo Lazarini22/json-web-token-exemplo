@@ -90,25 +90,31 @@ app.post("/usuarios/cadastrar", async function (req, res) {
 app.post("/logar", async function (req, res) {
   try {
     const user = await usuario.findOne({ where: { usuario: req.body.usuario} });
-    let userSenha = crypto.decrypt(user.senha);
     if (!user) {
+      return res.status(500).json({error: "Usuarion não encontrado"});
+    }
+    let userSenha = crypto.decrypt(user.senha);
+    if (req.body.senha === userSenha){ 
       const id = user.id;
       const token = jwt.sign({ id }, process.env.SECRET, {
         expiresIn: 300,
       });
       res.cookie("token", token, { httpOnly: true }).json({
-          name: user.usuario,
+          usuari: user.usuario,
           token: token
-      })
-      
+      });
     } else {
-      res.status(500).send("Senha inválida");
+      res.status(500).json({error: "Senha inválida"});
     }
-  } catch (error) {
-    console.error(error);
+  } catch(error) {
     res.status(500).send("Erro ao autenticar usuário");
   }
 });
+
+
+
+
+
 
 app.post("/deslogar", function (req, res) {
   res.cookie("token", null, { httpOnly: true });
