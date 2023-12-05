@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 const url = "http://localhost:4000";
 
 const getUserAuthenticated = async (user) => {
