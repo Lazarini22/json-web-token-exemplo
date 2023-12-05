@@ -23,33 +23,18 @@ const getUserAuthenticated = async (user) => {
   }
 };
 
-
-
-  const postUsuario = async (user) => {
-    try{
-      const resapi = await fetch(url + "/user",{
-        method: 'POST',
-        headers: {'content-Type': 'Application/json'},
-        body: JSON.stringify(user)
-      });
-      const saveUsuario = await resapi.json();
-      return saveUsuario;
-    }catch{
-      return null;
-    }
-    }
-
-
-  const pegarUsuario = async () =>{
-
-    const pegar = await fetch(url + "/users",
-    {
-      next: {revalidate: 10},
-    }
-);
-  
-  const usuarioAutentique = await pegar.josn();
-  return usuarioAutentique;
+const postUsuario = async (user) => {
+  try {
+    const resapi = await fetch(url + "/user", {
+      method: "POST",
+      headers: { "content-Type": "Application/json" },
+      body: JSON.stringify(user),
+    });
+    const saveUsuario = await resapi.json();
+    return saveUsuario;
+  } catch {
+    return null;
+  }
 };
 
 const getUsers = async (user) => {
@@ -71,4 +56,4 @@ const getUsers = async (user) => {
   }
 };
 
-export {pegarUsuario, getUserAuthenticated, postUsuario};
+export { getUsers, getUserAuthenticated, postUsuario };

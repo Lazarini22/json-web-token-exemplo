@@ -14,23 +14,23 @@ export default function Login() {
 
   const handlerLogin = async (e) => {
     e.preventDefault();
-  
-      try {
-        const userAuth = await handlerAcessUser(user);
-        if (userAuth.error) {
-          let mensagem = JSON.parse(userAuth.error)
-          toast.error(mensagem.error);
-          return;
-        }
-        toast.success("login efetuado");
-        setTimeout(() => {
-          push("/pages/dashboard");
-        }, 1500);
-      }catch {
-        toast.error("Error!");
-        refresh();
+
+    try {
+      const userAuth = await handlerAcessUser(user);
+      if (userAuth.error) {
+        let mensagem = JSON.parse(userAuth.error);
+        toast.error(mensagem.error);
+        return;
       }
-    };
+      toast.success("login efetuado");
+      setTimeout(() => {
+        push("/pages/dashboard");
+      }, 1500);
+    } catch {
+      toast.error("Error!");
+      refresh();
+    }
+  };
 
   return (
     <div className="page">
@@ -62,5 +62,4 @@ export default function Login() {
       <ToastContainer />
     </div>
   );
-          
-          }
+}

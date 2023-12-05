@@ -1,10 +1,10 @@
-import Listagem from "@/app/Listagem/Listagem";
-import { getUsers, pegarUsuario } from "@/app/functions/handlerAcessAPI";
-import { Suspense } from "react";
+
+import { getUsers } from "@/app/functions/handlerAcessAPI";
+
 
 export default async function Dashboard() {
 
-  const dash = await pegarUsuario();
+  const dash = await getUsers();
 
   return (
     <body className={styles.body}>
@@ -13,7 +13,7 @@ export default async function Dashboard() {
           <h1 className={StyleSheet.textao}>Dashboard</h1>
 
           <div className={style.nzao}>
-            {chama.map((users) =>
+            {dash.map((users) =>
               <p className={style.usuario}>Nome: {users.nome}</p>
             )}
           </div>
