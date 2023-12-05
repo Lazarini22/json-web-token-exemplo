@@ -122,5 +122,5 @@ app.post("/deslogar", function (req, res) {
 });
 
 app.listen(4000, function () {
-  console.log("App de Exemplo escutando na porta 3000!");
+  console.log("App de Exemplo escutando na porta 4000!");
 });
