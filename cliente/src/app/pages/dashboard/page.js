@@ -1,23 +1,26 @@
-
 import { getUsers } from "@/app/functions/handlerAcessAPI";
 
-
 export default async function Dashboard() {
-
   const dash = await getUsers();
 
   return (
-    <body>
+    <div className="page">
+      <header>
+        <h1>
+          IFMS<span className="servidores">.servidores</span>
+        </h1>
+      </header>
       <div>
-        <div>
-          <h1>Dashboard</h1>
-          <div>
-            {dash.map((users) =>
-              <p>Nome: {users.usuario}</p>
-            )}
-          </div>
+        <div className="container">
+          {dash.map((user) => (
+            <div className="user">
+              <p>
+                <span>Nome:</span> {user.usuario}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-    </body>
-);
-};
+    </div>
+  );
+}
