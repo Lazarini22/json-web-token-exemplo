@@ -20,8 +20,6 @@ const express = require("express");
 const { usuario } = require("./models");
 const app = express();
 
-
-
 app.set("view engine", "ejs");
 
 app.use(cors(corsOpcoes));
@@ -55,66 +53,31 @@ app.get("/usuarios/cadastrar", async function (req, res) {
 
 app.get("/usuarios/listar", async function (req, res) {
   try {
-    const list = await usuario.findAll();
-    res.render("listar", { list });
+    const listagem = await usuario.findAll();
+    res.json(listagem);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Erro ao listar usuários");
-  }
-});
-
-app.post("/usuarios/cadastrar", async function (req, res) {
-  try {
-    let existeUser = await usuario.findOne({ where: { usuario: req.body.usuario } });
-    if (existeUser) {
-      res.status(500).send("O usuário já existe");
-    } else {
-      if (req.body.senha == req.body.confirmpass) {
-        // Criptografando a senha no banco de dados
-        let senhaCrypto = crypto.encrypt(req.body.senha);
-        await usuario.create({
-          usuario: req.body.usuario,
-          senha: senhaCrypto,
-        });
-        res.redirect("/autenticar");
-      } else {
-        res.status(500).send("As senhas devem ser idênticas");
-      }
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Erro ao cadastrar usuário");
+    res.status(500).send("Error!");
   }
 });
 
 app.post("/logar", async function (req, res) {
   try {
     const user = await usuario.findOne({ where: { usuario: req.body.usuario} });
-    if (!user) {
-      return res.status(500).json({error: "Usuarion não encontrado"});
-    }
-    let userSenha = crypto.decrypt(user.senha);
-    if (req.body.senha === userSenha){ 
+    let userDescript = crypto.decrypt(user.senha);
+    if (userDescript === req.body.senha){ 
       const id = user.id;
-      const token = jwt.sign({ id }, process.env.SECRET, {
-        expiresIn: 300,
-      });
+      const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 300, });
       res.cookie("token", token, { httpOnly: true }).json({
           usuari: user.usuario,
           token: token
       });
     } else {
-      res.status(500).json({error: "Senha inválida"});
+      res.status(500).json({error: "Senha incorreta"});
     }
   } catch(error) {
     res.status(500).send("Erro ao autenticar usuário");
   }
 });
-
-
-
-
-
 
 app.post("/deslogar", function (req, res) {
   res.cookie("token", null, { httpOnly: true });

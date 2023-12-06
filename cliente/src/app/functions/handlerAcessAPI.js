@@ -13,29 +13,10 @@ const getUserAuthenticated = async (user) => {
       body: JSON.stringify(user),
     });
 
-    if (!responseOfApi.ok) {
-      const errorText = await responseOfApi.text();
-      throw new Error(errorText);
-    }
-    //Converte resposta para json
     const userAuth = await responseOfApi.json();
     return userAuth;
   } catch (error) {
     return { error: error.message };
-  }
-};
-
-const postUsuario = async (user) => {
-  try {
-    const resapi = await fetch(url + "/user", {
-      method: "POST",
-      headers: { "content-Type": "Application/json" },
-      body: JSON.stringify(user),
-    });
-    const saveUsuario = await resapi.json();
-    return saveUsuario;
-  } catch {
-    return null;
   }
 };
 
@@ -51,11 +32,12 @@ const getUsers = async (user) => {
       },
       body: JSON.stringify(user),
     });
+    
     const users = await responseOfApi.json();
     return users;
-  } catch {
-    return null;
+  } catch (error) {
+    return { error: error.message };
   }
 };
 
-export { getUsers, getUserAuthenticated, postUsuario };
+export { getUsers, getUserAuthenticated };

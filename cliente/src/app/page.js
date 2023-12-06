@@ -18,8 +18,8 @@ export default function Login() {
     try {
       if (user.senha.trim() !== "" && user.usuario.trim() !== "") {
         const userAuth = await handlerAcessUser(user);
-        if (userAuth.token === undefined) {
-          toast.error("Usuário ou senha incorretos");
+        if (!userAuth.token) {
+          toast.error("Usuário ou senha incorreto");
         } else {
           toast.success("Login efetuado");
           setTimeout(() => {
@@ -27,7 +27,7 @@ export default function Login() {
           }, 1500);
         }
       } else {
-        toast.error("O usuário ou a senha não pode ser vazio");
+        toast.error("Preencha todos os campos");
       }
     } catch {
       toast.error("Error!");
