@@ -1,64 +1,78 @@
-'use client'
+"use client";
 import { useState } from "react";
-import handlerAcessUser from "../../functions/handlerAcess"
 import { useRouter } from "next/navigation";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Link from 'next/link';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 export default function Registro() {
-  const [registra, setRegistra] = useState({
-    usuario: '',
-    senha: ''
+  const [user, setUser] = useState({
+    usuario: "",
+    senha: "",
+    confirmpass: "",
   });
   const { push, refresh } = useRouter();
 
-  
-
   const handlerRegistro = async (e) => {
     e.preventDefault();
+
     try {
-      await handlerAcessUser(user);
-      push('/pages/dashboard');
+      if (user.senha.trim() !== "" && user.usuario.trim() !== "" && user.confirmpass.trim() !== "") {
+        if (user.senha !== user.confirmpass) {
+          toast.error("As senhas não coincidem.");
+        } else{
+          await postUser(user); 
+          toast.success("Cadastro efetuado.");
+          setTimeout(() => {
+            push("/pages/dashboard");
+          }, 1500);
+        }
+      } else{
+        toast.error("Preencha todos os campos");
+      }
     } catch {
+      toast.error("Error!");
       refresh();
-    }
-
-    const success = true;
-
-    if (success) {
-      toast.success('Usuário registrado com sucesso!');
-    } else {
-      toast.error('Ocorreu um erro ao enviar o formulário.');
     }
   };
 
   return (
-    <body >
-      <div >
-        <h1 >Registre-se</h1>
-        <form  onSubmit={handlerRegistro}>
+    <div className="page-vh">
+      <header id="espace">
+        <h1>
+          IFMS<span className="servidores">.servidores</span>
+        </h1>
+      </header>
+      <div className="section">
+        <form onSubmit={handlerRegistro}>
           <input
-            required
-
-            placeholder='Nome'
+            placeholder="Nome"
             type="name"
-            onChange={(e) => { setRegistra({ ...registra, usuario: e.target.value }) }}>
-          </input>
-
+            onChange={(e) => {
+              setUser({ ...user, usuario: e.target.value });
+            }}
+          ></input>
           <input
-            required
-
-            placeholder='Senha'
-            type='password'
-            onChange={(e) => { setRegistra({ ...registra, senha: e.target.value }) }}>
-          </input>
-          <button >Entrar</button>
+            placeholder="Senha"
+            type="password"
+            onChange={(e) => {
+              setUser({ ...user, senha: e.target.value });
+            }}
+          ></input>
+          <input
+            placeholder="Senha"
+            type="password"
+            onChange={(e) => {
+              setUser({ ...user, confirmpass: e.target.value });
+            }}
+          ></input>
+          <br/>
+          <button>Registrar</button>
         </form>
-        <h3 ><Link  href='/pages/dashboard'>Clique aqui</Link> para retornar a página de Dashboard</h3>
-        <h3 >Deseja alterar algum dado? <Link  href="/pages/alter">Clique aqui</Link></h3>
+        <br/>
+        <Link id="back-dash" href="/pages/dashboard">Voltar</Link>
         <ToastContainer />
       </div>
-    </body>
-  )
+    </div>
+  );
 }
