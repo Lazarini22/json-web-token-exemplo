@@ -8,11 +8,11 @@ const corsOpcoes = {
   //CLIENTE QUE FARÁ O ACESSO
   origin: "Http://localhost:3000",
   //METODOS QUE O CLIENTE PODE EXECUTAR
-  methods:"GET,PUT,POST,DELETE",
+  methods: "GET,PUT,POST,DELETE",
 
-  allowedHeaders:"Content-Type, Authorization",
-  credentials: true
-} 
+  allowedHeaders: "Content-Type, Authorization",
+  credentials: true,
+};
 
 const cors = require("cors");
 var cookieParser = require("cookie-parser");
@@ -62,20 +62,43 @@ app.get("/usuarios/listar", async function (req, res) {
 
 app.post("/logar", async function (req, res) {
   try {
-    const user = await usuario.findOne({ where: { usuario: req.body.usuario} });
+    const user = await usuario.findOne({
+      where: { usuario: req.body.usuario },
+    });
     let userDescript = crypto.decrypt(user.senha);
-    if (userDescript === req.body.senha){ 
+    if (userDescript === req.body.senha) {
       const id = user.id;
-      const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 300, });
+      const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 300 });
       res.cookie("token", token, { httpOnly: true }).json({
-          usuari: user.usuario,
-          token: token
+        usuari: user.usuario,
+        token: token,
       });
     } else {
-      res.status(500).json({error: "Senha incorreta"});
+      res.status(500).json({ error: "Senha incorreta" });
     }
-  } catch(error) {
+  } catch (error) {
     res.status(500).send("Erro ao autenticar usuário");
+  }
+});
+
+app.post("/usuarios/registrar", async function (req, res) {
+  try {
+    let usuarioExistente = await usuario.findOne({
+      where: { usuario: req.body.usuario },
+    });
+
+    if (usuarioExistente) {
+      res.status(500).json({ error: "Usuario já existe" });
+    } else {
+      let senhaCrypto = crypto.encrypt(req.body.senha);
+      await usuario.create({
+        usuario: req.body.usuario,
+        senha: senhaCrypto,
+      });
+      res.redirect("/");
+    }
+  } catch (error) {
+    res.status(500).send("Erro ao cadastrar usuário");
   }
 });
 

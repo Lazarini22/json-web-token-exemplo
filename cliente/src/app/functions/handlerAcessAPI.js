@@ -20,6 +20,26 @@ const getUserAuthenticated = async (user) => {
   }
 };
 
+const postUser = async (user) => {
+  const token = cookies().get("token")?.value;
+
+  try {
+    const responseOfApi = await fetch(url + "/usuarios/registrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+        Cookie: `token=${token}`,
+      },
+      body: JSON.stringify(user),
+    });
+
+    const userSave = await responseOfApi.json();
+    return userSave;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 const getUsers = async (user) => {
   const token = cookies().get("token")?.value;
 
@@ -40,4 +60,4 @@ const getUsers = async (user) => {
   }
 };
 
-export { getUsers, getUserAuthenticated };
+export { getUsers, getUserAuthenticated, postUser };
