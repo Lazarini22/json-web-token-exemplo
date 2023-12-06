@@ -16,16 +16,19 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const userAuth = await handlerAcessUser(user);
-      if (userAuth.error) {
-        let mensagem = JSON.parse(userAuth.error);
-        toast.error(mensagem.error);
-        return;
+      if (user.senha.trim() !== "" && user.usuario.trim() !== "") {
+        const userAuth = await handlerAcessUser(user);
+        if (userAuth.token === undefined) {
+          toast.error("Usuário ou senha incorretos");
+        } else {
+          toast.success("Login efetuado");
+          setTimeout(() => {
+            push("/pages/dashboard");
+          }, 1500);
+        }
+      } else {
+        toast.error("O usuário ou a senha não pode ser vazio");
       }
-      toast.success("login efetuado");
-      setTimeout(() => {
-        push("/pages/dashboard");
-      }, 1500);
     } catch {
       toast.error("Error!");
       refresh();
@@ -33,7 +36,7 @@ export default function Login() {
   };
 
   return (
-    <div className="page">
+    <div className="page-vh">
       <header id="espace">
         <h1>
           IFMS<span className="servidores">.servidores</span>
@@ -56,6 +59,7 @@ export default function Login() {
               setUser({ ...user, senha: e.target.value });
             }}
           ></input>
+          <br />
           <button>Entrar</button>
         </form>
       </div>
