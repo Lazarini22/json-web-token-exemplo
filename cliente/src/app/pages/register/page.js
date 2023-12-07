@@ -7,41 +7,47 @@ import Link from "next/link";
 import { postUser } from "@/app/functions/handlerAcessAPI";
 
 export default function Registro() {
-  const [user, setUser] = useState({
-    usuario: "",
-    senha: "",
-    confirmpass: "",
-  });
-  const { push, refresh } = useRouter();
+    const [user, setUser] = useState({
+      usuario: "",
+      senha: "",
+      confirmpass: "",
+    });
+    const { push, refresh } = useRouter();
 
-  const handlerRegistro = async (e) => {
-    e.preventDefault();
+    const handlerRegistro = async (e) => {
+      e.preventDefault();
 
-    try {
-      if (user.senha.trim() !== "" && user.usuario.trim() !== "" && user.confirmpass.trim() !== "") {
-        if (user.senha !== user.confirmpass) {
-          toast.error("As senhas não coincidem");
-        } else{
-          let messreqBug = await postUser(user); 
-          if (messreqBug.error) {
-            if (messreqBug.error !== "Unexpected token < in JSON at position 0") {
-              toast.error(messreqBug.error);
-            } else {
-              toast.success("Usuário cadastrado");
-              setTimeout(() => { 
-                push("/pages/dashboard");
-              }, 1500);
+      try {
+        //verifica se os campos de usuário e senha não estão vazios ou contêm apenas espaços em branco
+        //trim remove os espaços vazios do inicio e final do texto
+        if (user.senha.trim() !== "" && user.usuario.trim() !== "" && user.confirmpass.trim() !== "") {
+          if (user.senha !== user.confirmpass) {
+            toast.error("As senhas não coincidem");
+          } else{
+            //realiza a criação do usuário e trata possíveis erros
+            let messreqBug = await postUser(user); 
+            //gambiarra
+            if (messreqBug.error) {
+              //se o erro for diferente de Unexpected token cadastra
+              if (messreqBug.error !== "Unexpected token < in JSON at position 0") {
+                toast.error(messreqBug.error);
+              } else {
+                toast.success("Usuário cadastrado");
+                setTimeout(() => { 
+                  push("/pages/dashboard");
+                }, 1500);
+                refresh()
+              }
             }
           }
+        } else{
+          toast.error("Preencha todos os campos");
         }
-      } else{
-        toast.error("Preencha todos os campos");
+      } catch {
+        toast.error("Error!");
+        refresh();
       }
-    } catch {
-      toast.error("Error!");
-      refresh();
-    }
-  };
+    };
 
   return (
     <div className="page-vh">

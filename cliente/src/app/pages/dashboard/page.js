@@ -1,4 +1,5 @@
 import { getUsers } from "@/app/functions/handlerAcessAPI";
+import Link from "next/link";
 
 export default async function Dashboard() {
   const dash = await getUsers();
@@ -12,6 +13,8 @@ export default async function Dashboard() {
       </header>
       <div>
         <div className="container">
+        <Link id="register" href="/pages/register">Registrar Usuário <br/></Link>
+        <br/>
           {dash.map((user) => (
             <div className="user">
               <p>

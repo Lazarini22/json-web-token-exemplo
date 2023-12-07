@@ -16,6 +16,8 @@ export default function Login() {
     e.preventDefault();
 
     try {
+      //verifica se os campos de usuário e senha não estão vazios ou contêm apenas espaços em branco
+      //trim remove os espaços vazios do inicio e final do texto
       if (user.senha.trim() !== "" && user.usuario.trim() !== "") {
         const userAuth = await handlerAcessUser(user);
         if (!userAuth.token) {

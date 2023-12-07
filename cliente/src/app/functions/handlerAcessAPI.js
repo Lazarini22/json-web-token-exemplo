@@ -16,6 +16,7 @@ const getUserAuthenticated = async (user) => {
     const userAuth = await responseOfApi.json();
     return userAuth;
   } catch (error) {
+    //retorna erro em caso de falha
     return { error: error.message };
   }
 };
@@ -36,6 +37,7 @@ const postUser = async (user) => {
     const userSave = await responseOfApi.json();
     return userSave;
   } catch (error) {
+    //retorna erro em caso de falha
     return { error: error.message };
   }
 };
@@ -56,6 +58,7 @@ const getUsers = async (user) => {
     const users = await responseOfApi.json();
     return users;
   } catch (error) {
+    //retorna erro em caso de falha
     return { error: error.message };
   }
 };

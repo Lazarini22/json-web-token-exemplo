@@ -4,6 +4,11 @@ const crypto = require("./crypto");
 require("dotenv-safe").config();
 const jwt = require("jsonwebtoken");
 var { expressjwt: expressJWT } = require("express-jwt");
+
+//o cors abre um porta no servidor para o cliente e libera para que o cliente possa acessar certas funcionanlidades
+const cors = require("cors");
+
+//define o que o cliente pode fazer
 const corsOpcoes = {
   //CLIENTE QUE FARÁ O ACESSO
   origin: "Http://localhost:3000",
@@ -14,7 +19,6 @@ const corsOpcoes = {
   credentials: true,
 };
 
-const cors = require("cors");
 var cookieParser = require("cookie-parser");
 const express = require("express");
 const { usuario } = require("./models");

@@ -104,6 +104,20 @@ button {
   background-color: #a04545;
 }
 
+#register{
+  padding: 8px 18px;
+  background-color: #4c75af;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#register:hover {
+  background-color: #456ba0;
+}
+
 form {
   display: flex;
   flex-direction: column;
