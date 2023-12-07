@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
+import { postUser } from "@/app/functions/handlerAcessAPI";
 
 export default function Registro() {
   const [user, setUser] = useState({
@@ -19,13 +20,19 @@ export default function Registro() {
     try {
       if (user.senha.trim() !== "" && user.usuario.trim() !== "" && user.confirmpass.trim() !== "") {
         if (user.senha !== user.confirmpass) {
-          toast.error("As senhas não coincidem.");
+          toast.error("As senhas não coincidem");
         } else{
-          await postUser(user); 
-          toast.success("Cadastro efetuado.");
-          setTimeout(() => {
-            push("/pages/dashboard");
-          }, 1500);
+          let messreqBug = await postUser(user); 
+          if (messreqBug.error) {
+            if (messreqBug.error !== "Unexpected token < in JSON at position 0") {
+              toast.error(messreqBug.error);
+            } else {
+              toast.success("Usuário cadastrado");
+              setTimeout(() => { 
+                push("/pages/dashboard");
+              }, 1500);
+            }
+          }
         }
       } else{
         toast.error("Preencha todos os campos");
@@ -46,7 +53,7 @@ export default function Registro() {
       <div className="section">
         <form onSubmit={handlerRegistro}>
           <input
-            placeholder="Nome"
+            placeholder="Nome Completo"
             type="name"
             onChange={(e) => {
               setUser({ ...user, usuario: e.target.value });
@@ -60,7 +67,7 @@ export default function Registro() {
             }}
           ></input>
           <input
-            placeholder="Senha"
+            placeholder="Confirmar Senha"
             type="password"
             onChange={(e) => {
               setUser({ ...user, confirmpass: e.target.value });
